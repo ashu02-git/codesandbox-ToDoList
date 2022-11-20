@@ -176,7 +176,57 @@ module.hot.accept(reloadCSS);
 "use strict";
 
 require("./styles.css");
-document.getElementById("app").innerHTML = "\n<h1>Hello Vanilla!</h1>\n<div>\n  We use the same configuration as Parcel to bundle this sandbox, you can find more\n  info about Parcel 11\n  <a href=\"https://parceljs.org\" target=\"_blank\" rel=\"noopener noreferrer\">here</a>.\n</div>\n";
+var onClickAdd = function onClickAdd() {
+  var incompletedList = document.getElementById("incompleted-list");
+  var completedList = document.getElementById("completed-list");
+
+  // テキストボックスの値取得し、初期化する
+  var inputText = document.getElementById("add-text").value;
+  document.getElementById("add-text").value = "";
+
+  // listItem生成
+  var listItem = document.createElement("li");
+  listItem.className = "list-item";
+  listItem.innerText = inputText;
+
+  // 完了ボタン生成
+  var completeButton = document.createElement("button");
+  completeButton.className = "complet-button";
+  completeButton.innerText = "完了";
+  completeButton.addEventListener("click", function () {
+    var completedTreat = completeButton.parentNode;
+    var getListId = completedTreat.parentNode.getAttribute("id");
+    if (getListId === "completed-list") {
+      console.log(getListId);
+      completedList.removeChild(completedTreat);
+      incompletedList.appendChild(completedTreat);
+    } else {
+      console.log(getListId);
+      incompletedList.removeChild(completedTreat);
+      completedList.appendChild(completedTreat);
+    }
+  });
+
+  // 削除ボタン生成
+  var deleteButton = document.createElement("button");
+  deleteButton.className = "delete-button";
+  deleteButton.innerText = "削除";
+  deleteButton.addEventListener("click", function () {
+    // 押された削除ボダンの親タグ(li)をリストから削除
+    var deleteTreat = deleteButton.parentNode;
+    incompletedList.removeChild(deleteTreat);
+  });
+
+  // listItemの子要素追加
+  listItem.appendChild(completeButton);
+  listItem.appendChild(deleteButton);
+
+  // 未完了リスト追加
+  incompletedList.appendChild(listItem);
+};
+document.getElementById("add-button").addEventListener("click", function () {
+  return onClickAdd();
+});
 },{"./styles.css":"src/styles.css"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -202,7 +252,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "34375" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "41871" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
