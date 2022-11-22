@@ -59,8 +59,6 @@ const onClickAdd = () => {
     const backItem = setItem(incompletedListId, backItemText);
     document.getElementById("incompleted-list").appendChild(backItem);
     // deleteParentNode(backButton.parentNode);
-    // const backItem = setItem(incompletedList, backItemText);
-    // document.getElementById("incompleted-list").appendChild(backItem);
   });
 
   // 未完了リスト追加
