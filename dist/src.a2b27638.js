@@ -177,52 +177,60 @@ module.hot.accept(reloadCSS);
 
 require("./styles.css");
 var onClickAdd = function onClickAdd() {
-  var incompletedList = document.getElementById("incompleted-list");
-  var completedList = document.getElementById("completed-list");
-
   // テキストボックスの値取得し、初期化する
   var inputText = document.getElementById("add-text").value;
   document.getElementById("add-text").value = "";
-
-  // listItem生成
-  var listItem = document.createElement("li");
-  listItem.className = "list-item";
-  listItem.innerText = inputText;
-
-  // 完了ボタン生成
   var completeButton = document.createElement("button");
   completeButton.className = "complet-button";
   completeButton.innerText = "完了";
-  completeButton.addEventListener("click", function () {
-    var completedTreat = completeButton.parentNode;
-    var getListId = completedTreat.parentNode.getAttribute("id");
-    if (getListId === "completed-list") {
-      console.log(getListId);
-      completedList.removeChild(completedTreat);
-      incompletedList.appendChild(completedTreat);
-    } else {
-      console.log(getListId);
-      incompletedList.removeChild(completedTreat);
-      completedList.appendChild(completedTreat);
-    }
-  });
-
-  // 削除ボタン生成
+  var backButton = document.createElement("button");
+  backButton.className = "back-button";
+  backButton.innerText = "戻る";
   var deleteButton = document.createElement("button");
   deleteButton.className = "delete-button";
   deleteButton.innerText = "削除";
   deleteButton.addEventListener("click", function () {
+    var deleteParentId = deleteButton.parentNode.parentNode.id;
     // 押された削除ボダンの親タグ(li)をリストから削除
-    var deleteTreat = deleteButton.parentNode;
-    incompletedList.removeChild(deleteTreat);
+
+    deleteParentNode(deleteParentId, deleteButton.parentNode);
+  });
+  var setItem = function setItem(targetListId, listText) {
+    var listItem = document.createElement("li");
+    listItem.className = "list-item";
+    var itemText = document.createElement("a");
+    itemText.innerText = listText;
+    listItem.appendChild(itemText);
+    targetListId === "incomlpeted-list" ? listItem.appendChild(completeButton) : listItem.appendChild(backButton);
+    listItem.appendChild(deleteButton);
+    return listItem;
+  };
+  var incompletedListId = "incomlpeted-list";
+  var completedListId = "comlpeted-list";
+  var listItem = setItem(incompletedListId, inputText);
+  completeButton.addEventListener("click", function () {
+    var completeButtonParentId = completeButton.parentNode.parentNode.id;
+    var comlpetedItemText = completeButton.parentNode.firstElementChild.innerText;
+    deleteParentNode(completeButtonParentId, completeButton.parentNode);
+    var completedItem = setItem(completedListId, comlpetedItemText);
+    document.getElementById("completed-list").appendChild(completedItem);
+  });
+  backButton.addEventListener("click", function () {
+    var backButtonParentId = backButton.parentNode.parentNode.id;
+    var backItemText = backButton.parentNode.firstElementChild.innerText;
+    deleteParentNode(backButtonParentId, backButton.parentNode);
+    var backItem = setItem(incompletedListId, backItemText);
+    document.getElementById("incompleted-list").appendChild(backItem);
+    // deleteParentNode(backButton.parentNode);
+    // const backItem = setItem(incompletedList, backItemText);
+    // document.getElementById("incompleted-list").appendChild(backItem);
   });
 
-  // listItemの子要素追加
-  listItem.appendChild(completeButton);
-  listItem.appendChild(deleteButton);
-
   // 未完了リスト追加
-  incompletedList.appendChild(listItem);
+  document.getElementById("incompleted-list").appendChild(listItem);
+};
+var deleteParentNode = function deleteParentNode(ParentId, target) {
+  document.getElementById(ParentId).removeChild(target);
 };
 document.getElementById("add-button").addEventListener("click", function () {
   return onClickAdd();
@@ -252,7 +260,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "41871" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "34237" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
